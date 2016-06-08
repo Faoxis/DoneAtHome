@@ -38,16 +38,20 @@ void initTimer(void) {
 	 timer_OCI.TIM_OCPolarity   = TIM_OCNPolarity_High;    // рег TIMx->CCER бит CC1P Полярность выхода
 	 TIM_OC1Init(TIM2, &timer_OCI);
 
-	 TIM2->DIER |= TIM_DIER_CC1IE;
+	 TIM_ICInitTypeDef someVar;
+
+
+	 TIM_ITConfig(TIM2, TIM_IT_CC1, ENABLE);
 
 	 NVIC_EnableIRQ(TIM2_IRQn);
 	 TIM_Cmd(TIM2, ENABLE); // Пуск!
-
 }
+
 
 void TIM2_IRQHandler(void) {
 	int a;
-	TIM_ClearITPendingBit(TIM6, TIM_IT_CC1);
+//	TIM_ClearITPendingBit(TIM6, TIM_IT_CC1);
+	TIM2->SR &= ~TIM_SR_CC1IF;
 }
 
 
